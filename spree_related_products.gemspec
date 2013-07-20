@@ -26,17 +26,21 @@ Gem::Specification.new do |s|
 
   s.has_rdoc = true
 
-  s.add_runtime_dependency 'spree', '~> 2.0'
+  s.add_runtime_dependency 'spree', '~> 2.0.3'
 
   s.add_development_dependency 'capybara', '~> 2.1.0'
   s.add_development_dependency 'capybara-webkit', '~> 1.0.0'
   s.add_development_dependency 'factory_girl', '~> 4.2'
   s.add_development_dependency 'ffaker'
   s.add_development_dependency 'rspec-rails', '~> 2.13'
+  s.add_development_dependency 'shoulda-matchers', '~> 2.2'
   s.add_development_dependency 'simplecov'
   s.add_development_dependency 'sqlite3', '~> 1.3.7'
   s.add_development_dependency 'database_cleaner'
   s.add_development_dependency 'i18n-spec', '~> 0.4.0'
   s.add_development_dependency 'fuubar', '>= 0.0.1'
+  s.add_development_dependency 'guard-rspec'
+  s.add_development_dependency 'launchy'
+  s.add_development_dependency 'coveralls'
   s.add_development_dependency 'pry-rails'
 end

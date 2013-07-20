@@ -19,6 +19,8 @@ ENV['RAILS_ENV'] = 'test'
 require File.expand_path('../dummy/config/environment.rb',  __FILE__)
 
 require 'rspec/rails'
+require 'i18n-spec'
+require 'shoulda-matchers'
 require 'capybara/rspec'
 require 'capybara/webkit'
 require 'ffaker'
@@ -33,23 +35,22 @@ require 'spree/testing_support/url_helpers'
 require 'spree/testing_support/capybara_ext'
 
 RSpec.configure do |config|
-  config.include Capybara::DSL, type: :request
-  config.include Spree::TestingSupport::ControllerRequests
   config.include FactoryGirl::Syntax::Methods
+  config.include Spree::TestingSupport::ControllerRequests
   config.include Spree::TestingSupport::UrlHelpers
 
   config.extend Spree::TestingSupport::AuthorizationHelpers::Request, type: :feature
 
   config.mock_with :rspec
   config.use_transactional_fixtures = false
-  config.fail_fast = ENV['FAIL_FAST'] || false
+
+  config.before :suite do
+    DatabaseCleaner.strategy = :transaction
+    DatabaseCleaner.clean_with :truncation
+  end
 
   config.before do
-    if example.metadata[:js]
-      DatabaseCleaner.strategy = :truncation
-    else
-      DatabaseCleaner.strategy = :transaction
-    end
+    DatabaseCleaner.strategy = example.metadata[:js] ? :truncation : :transaction
     DatabaseCleaner.start
   end
 
