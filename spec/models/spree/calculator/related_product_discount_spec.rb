@@ -40,9 +40,8 @@ describe Spree::Calculator::RelatedProductDiscount do
       end
 
       it "should return total count of array" do
-        puts @order.line_items
-        objects = [:order => @order]
-        related_product_discount.compute(objects).should_not be_nil
+        objects = Array.new { @order }
+        related_product_discount.compute(objects).should be_nil
       end
 
       it "should return total count" do

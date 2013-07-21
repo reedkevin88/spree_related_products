@@ -6,6 +6,7 @@ describe Spree::Admin::RelationsController do
   let(:user) { create(:user) }
   let(:product) { create(:product) }
   before do
+    controller.stub spree_current_user: user
     @other1 = create(:product)
     @relation_type = Spree::RelationType.create(name: "Related Products", applies_to: "Spree::Product")
     @relation = Spree::Relation.create!(relatable: product, related_to: @other1, relation_type: @relation_type)
