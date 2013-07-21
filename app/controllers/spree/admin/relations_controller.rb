@@ -7,11 +7,16 @@ module Spree
 
       def create
         @relation = Spree::Relation.new
-        @relation.relatable = @product
+        product = Spree::Product.find(params[:product_id])
+        @relation.relatable = product
+        @relation.relation_type = Spree::RelationType.find_by_id(params[:relation][:relation_type_id])
         @relation.related_to = Spree::Variant.find(params[:relation][:related_to_id]).product
-        @relation.save
 
-        respond_with(@relation)
+        if @relation.save
+          redirect_to(action: 'index', notice: "The relation is successfully created.")
+        else
+          redirect_to(action: 'new')
+        end
       end
 
       def update

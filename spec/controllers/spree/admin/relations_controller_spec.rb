@@ -5,10 +5,6 @@ describe Spree::Admin::RelationsController do
 
   let(:user) { create(:user) }
   let(:product) { create(:product) }
-
-  before { controller.stub spree_current_user: user }
-  after  { Spree::Admin::RelationsController.clear_overrides! }
-
   before do
     @other1 = create(:product)
     @relation_type = Spree::RelationType.create(name: "Related Products", applies_to: "Spree::Product")
@@ -21,10 +17,17 @@ describe Spree::Admin::RelationsController do
     end
   end
 
-  pending "#create" do
-    it "should be respond relations" do
-      spree_post :create, id: @relation.id, relation: { related_to_id: @other1.id }
-      response.status.should eq 200
+  context "#create" do
+    it "should be redirect to action_index if success" do
+      spree_post :create, relation: {related_to_id: @other1.id, 
+        relation_type_id: @relation_type.id }, product_id: product.id
+      response.status.should eq 302
+    end
+
+    it "should be redirect to action_new if failed" do
+      spree_post :create, relation: {related_to_id: @other1.id, 
+        relation_type: {name: @relation_type.name, applies_to: @relation_type.applies_to} }, 
+        product_id: product.id
     end
   end
 
